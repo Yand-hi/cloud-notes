@@ -5,7 +5,7 @@
       <router-link to="/note/1" title="笔记">
         <i class="iconfont icon-note"/>
       </router-link>
-      <router-link to="/notebooks" title="笔记本">
+      <router-link to="/notebooks" title="笔记簿">
         <i class="iconfont icon-notebook"/>
       </router-link>
       <router-link to="/trash/2" title="回收站">
@@ -13,7 +13,7 @@
       </router-link>
     </div>
     <div class="logout">
-      <i class="iconfont icon-logout"/>
+      <i class="iconfont icon-logout" title="退出登录"/>
     </div>
   </div>
 </template>
@@ -29,27 +29,28 @@ export default {
 <style scoped>
 #sidebar {
   position: relative;
-  width: 56px;
+  width: 100px;
   text-align: center;
   background-color: #2c333c;
 }
 
 .icons {
-  margin-top: 15px;
+  margin-top: 30px;
 }
 
 .icons a {
-  padding: 6px 0;
+  padding: 15px 0;
   display: block;
 }
 
 .icons .router-link-active {
-  background-color: #5e6266;
+  background: #5e6266;
+  border-right: 3px solid #00b548;
 }
 
 .logout {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
   width: 100%;
   text-align: center;
   cursor: pointer;

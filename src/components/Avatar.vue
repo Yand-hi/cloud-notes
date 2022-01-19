@@ -1,34 +1,23 @@
 <template>
-  <span :title="user.username">{{ slug }}</span>
+  <span>
+    <img src="../assets/Evernote.png" alt="Evernote" title="Evernote">
+  </span>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      user: {
-        username: 'wang'
-      },
-      slug: 'W'
-    }
-  }
-}
+export default {}
 </script>
 
 <style scoped>
 span {
   display: inline-block;
-  width: 30px;
+  width: 80px;
   height: 30px;
-  text-align: center;
-  line-height: 32px;
-  border-radius: 50%;
-  background: #f2b81c;
-  color: #fff;
-  text-shadow: 1px 0 1px #795c19;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 18px;
-  margin-top: 15px;
+  background: transparent;
+  margin-top: 30px;
+}
+
+img {
+  width: 100%;
 }
 </style>
