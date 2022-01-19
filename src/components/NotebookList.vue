@@ -1,0 +1,29 @@
+<template>
+  <div id="notebook-list">
+    <h1>{{ msg }}</h1>
+    <ul>
+      <li>
+        <routerLink to="/note/1">笔记本1</routerLink>
+      </li>
+      <li>
+        <routerLink to="/note/2">笔记本2</routerLink>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      msg: '笔记本列表'
+    }
+  }
+}
+</script>
+
+<style scoped>
+h1 {
+  color: red;
+}
+</style>
