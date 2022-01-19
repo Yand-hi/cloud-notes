@@ -12,7 +12,7 @@
         <i class="iconfont icon-trash"/>
       </router-link>
     </div>
-    <div class="logout" @click="onLogout">
+    <div class="logout">
       <i class="iconfont icon-logout"/>
     </div>
   </div>
@@ -22,7 +22,7 @@
 import Avatar from './Avatar'
 
 export default {
-  comments: {Avatar}
+  components: {Avatar},
 }
 </script>
 
