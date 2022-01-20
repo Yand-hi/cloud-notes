@@ -9,7 +9,8 @@
         <input type="password"
                placeholder="Password"
                v-model="login.password"/>
-        <button class="btn">登 录</button>
+        <p v-show="login.isError">{{ login.notice }}</p>
+        <button class="btn" @click="onLogin">登 录</button>
         <button class="tipBtn" @click="toggleShow">还没有账户？立即创建</button>
       </form>
       <form action="#" v-if="!show">
@@ -20,7 +21,8 @@
         <input type="password"
                placeholder="Password"
                v-model="register.password"/>
-        <button class="btn">登 录</button>
+        <p v-show="register.isError">{{ register.notice }}</p>
+        <button class="btn" @click="onRegister">创 建</button>
         <button class="tipBtn" @click="toggleShow">已有账户，点击登录</button>
       </form>
     </div>
@@ -36,17 +38,35 @@ export default {
       login: {
         username: '',
         password: '',
+        notice: '',
+        isError: false
       },
       register: {
         username: '',
         password: '',
+        notice: '用户名或密码格式错误',
+        isError: false
       }
     }
   },
   methods: {
     toggleShow() {
       return this.show = !this.show
-    }
+    },
+    onLogin() {
+      console.log('login...')
+    },
+    onRegister() {
+      console.log('register...')
+      const usernameTest = /^[a-zA-Z0-9_-]{4,9}$/.test(this.register.username)
+      const passwordTest = /^[a-zA-Z0-9_-]{4,9}$/.test(this.register.password)
+      if (!usernameTest || !passwordTest) {
+        this.register.isError = true
+        window.alert('用户名和密码必须是4-9位数字字母或下划线的任意组合')
+      } else {
+        this.register.isError = false
+      }
+    },
   }
 }
 </script>
@@ -87,7 +107,7 @@ h1 {
 }
 
 .btn {
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 15px 45px;
   text-align: center;
   text-transform: uppercase;
@@ -131,5 +151,10 @@ input {
   border-bottom: 1px solid black;
   background: #fff;
   cursor: pointer;
+}
+
+p {
+  font-size: 12px;
+  color: red;
 }
 </style>
