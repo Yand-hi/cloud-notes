@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <div class="container">
-      <form action="#" v-if="show">
+      <form action="#" v-show="show">
         <h1>登录账户</h1>
         <input type="text"
                placeholder="Username"
@@ -13,7 +13,7 @@
         <button class="btn" @click="onLogin">登 录</button>
         <button class="tipBtn" @click="toggleShow">还没有账户？立即创建</button>
       </form>
-      <form action="#" v-if="!show">
+      <form action="#" v-show="!show">
         <h1>创建账户</h1>
         <input type="text"
                placeholder="Username"
@@ -54,10 +54,14 @@ export default {
       return this.show = !this.show
     },
     onLogin() {
-      console.log('login...')
+      if (!this.login.username || !this.login.password) {
+        this.login.isError = true
+        this.login.notice = '用户名和密码不能为空'
+      } else {
+        this.login.isError = false
+      }
     },
     onRegister() {
-      console.log('register...')
       const usernameTest = /^[a-zA-Z0-9_-]{4,9}$/.test(this.register.username)
       const passwordTest = /^[a-zA-Z0-9_-]{4,9}$/.test(this.register.password)
       if (!usernameTest || !passwordTest) {
