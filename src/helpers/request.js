@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 axios.defaults.headers.post['Content-type'] = 'application/x-www-form-urlencoded'
-axios.defaults.baseURL = 'https://note-server.hunger-valley.com/'
+axios.defaults.baseURL = 'https://note-server.hunger-valley.com'
 
 export default function request(url, type = 'GET', data = {}) {
   return new Promise((resolve, reject) => {
     let option = {
       url,
-      methods: type,
+      method: type,
       validateStatus(status) {
         return (status >= 200 && status < 300 || status === 400)
       }
@@ -21,9 +21,11 @@ export default function request(url, type = 'GET', data = {}) {
       if (res.status === 200) {
         resolve(res.data)
       } else {
+        console.error(res.data)
         reject(res.data)
       }
     }).catch(err => {
+      console.error({msg: '网络异常'})
       reject({msg: '网络异常'})
     })
   })

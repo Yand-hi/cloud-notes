@@ -156,8 +156,8 @@ input {
 }
 
 .tipBtn {
-  padding-top: 20px;
   font-size: 13px;
+  padding-top: 20px;
   border: none;
   border-bottom: 1px solid black;
   background: #fff;
