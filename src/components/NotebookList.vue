@@ -13,11 +13,21 @@
 </template>
 
 <script>
+import Auth from '../apis/auth'
+
 export default {
   data() {
     return {
       msg: '笔记本列表'
     }
+  },
+  created() {
+    Auth.getInfo()
+      .then(res => {
+        if (!res.login) {
+          this.$router.push({path: 'login'})
+        }
+      })
   }
 }
 </script>
