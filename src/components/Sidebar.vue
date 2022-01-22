@@ -1,4 +1,4 @@
-<template>
+<template xmlns="">
   <div id="sidebar">
     <Avatar/>
     <div class="icons">
@@ -13,16 +13,26 @@
       </router-link>
     </div>
     <div class="logout">
-      <i class="iconfont icon-logout" title="退出登录"/>
+      <i class="iconfont icon-logout" title="退出登录" @click="logout"/>
     </div>
   </div>
 </template>
 
 <script>
 import Avatar from './Avatar'
+import request from '../helpers/request'
 
 export default {
   components: {Avatar},
+  methods: {
+    logout() {
+      console.log('logout...')
+      request('/auth/logout')
+        .then(data => {
+          console.log(data)
+        })
+    }
+  }
 }
 </script>
 

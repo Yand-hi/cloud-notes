@@ -31,6 +31,12 @@
 
 <script>
 import request from '../helpers/request'
+import Auth from '../apis/auth'
+
+Auth.getInfo()
+  .then(data => {
+    console.log(data)
+  })
 
 export default {
   name: 'Login',
@@ -61,7 +67,7 @@ export default {
         this.login.notice = '用户名和密码不能为空'
       } else {
         this.login.isError = false
-        request('/auth/login', 'POST', {username: this.login.username, password: this.login.password})
+        Auth.login({username: this.login.username, password: this.login.password})
           .then(data => {
             console.log(data)
           })
@@ -75,7 +81,7 @@ export default {
         window.alert('用户名和密码必须是4-9位数字字母或下划线的任意组合')
       } else {
         this.register.isError = false
-        request('/auth/register', 'POST', {username: this.register.username, password: this.register.password})
+        Auth.register({username: this.register.username, password: this.register.password})
           .then(data => {
             console.log(data)
           })
