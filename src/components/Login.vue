@@ -30,19 +30,18 @@
 </template>
 
 <script>
-import request from '../helpers/request'
 import Auth from '../apis/auth'
 
-Auth.getInfo()
-  .then(data => {
-    console.log(data)
-  })
+// Auth.getInfo()
+//   .then(data => {
+//     console.log(data)
+//   })
 
 export default {
   name: 'Login',
   data() {
     return {
-      show: false,
+      show: true,
       login: {
         username: '',
         password: '',
@@ -66,25 +65,34 @@ export default {
         this.login.isError = true
         this.login.notice = '用户名和密码不能为空'
       } else {
-        this.login.isError = false
         Auth.login({username: this.login.username, password: this.login.password})
           .then(data => {
-            console.log(data)
-          })
+            this.login.isError = false
+            this.login.notice = ''
+            this.$router.push({path: 'notebooks'})
+            console.log('start redirect...')
+          }).catch(data => {
+          this.login.isError = true
+          this.login.notice = data.msg
+        })
       }
     },
     onRegister() {
-      const usernameTest = /^[a-zA-Z0-9_-]{4,9}$/.test(this.register.username)
-      const passwordTest = /^[a-zA-Z0-9_-]{4,9}$/.test(this.register.password)
+      const usernameTest = /^[a-zA-Z0-9_-]{6,16}$/.test(this.register.username)
+      const passwordTest = /^[a-zA-Z0-9_-]{6,16}$/.test(this.register.password)
       if (!usernameTest || !passwordTest) {
         this.register.isError = true
-        window.alert('用户名和密码必须是4-9位数字字母或下划线的任意组合')
+        window.alert('用户名和密码必须是6-16位数字字母或下划线的任意组合')
       } else {
-        this.register.isError = false
         Auth.register({username: this.register.username, password: this.register.password})
           .then(data => {
-            console.log(data)
-          })
+            this.register.isError = false
+            this.register.notice = ''
+            this.$router.push({path: 'notebooks'})
+          }).catch(data => {
+          this.register.isError = true
+          this.register.notice = data.msg
+        })
       }
     },
   }

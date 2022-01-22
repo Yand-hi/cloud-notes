@@ -20,16 +20,15 @@
 
 <script>
 import Avatar from './Avatar'
-import request from '../helpers/request'
+import Auth from '../apis/auth'
 
 export default {
   components: {Avatar},
   methods: {
     logout() {
-      console.log('logout...')
-      request('/auth/logout')
+      Auth.logout()
         .then(data => {
-          console.log(data)
+          this.$router.push({path: 'login'})
         })
     }
   }
