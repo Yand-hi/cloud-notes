@@ -52,7 +52,7 @@ a {
   font-size: 12px;
   padding: 2px 4px;
   background-color: #fff;
-  box-shadow: 0px 0px 2px 0px #ccc;
+  box-shadow: 0 0 2px 0 #ccc;
   border: none;
   cursor: pointer;
   display: inline-block;
