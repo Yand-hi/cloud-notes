@@ -1,14 +1,34 @@
 <template>
   <div id="notebook-list">
-    <h1>{{ msg }}</h1>
-    <ul>
-      <li>
-        <routerLink to="/note/1">笔记本1</routerLink>
-      </li>
-      <li>
-        <routerLink to="/note/2">笔记本2</routerLink>
-      </li>
-    </ul>
+    <header>
+      <a href="#" class="btn">
+        <i class="iconfont icon-plus"></i>
+        新建笔记本
+      </a>
+    </header>
+    <main>
+      <div class="layout">
+        <h3>笔记本列表(x)</h3>
+        <div class="book-list">
+          <a href="#" class="notebook">
+            <span class="iconfont icon-notebook"></span>
+            笔记本标题1
+            <span>1</span>
+            <span class="action">编辑</span>
+            <span class="action">删除</span>
+            <span class="date">一天前</span>
+          </a>
+          <a href="#" class="notebook">
+            <span class="iconfont icon-notebook"></span>
+            笔记本标题2
+            <span>1</span>
+            <span class="action">编辑</span>
+            <span class="action">删除</span>
+            <span class="date">两天前</span>
+          </a>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -23,8 +43,8 @@ export default {
   },
   created() {
     Auth.getInfo()
-      .then(res => {
-        if (!res.login) {
+      .then(data => {
+        if (!data.isLogin) {
           this.$router.push({path: 'login'})
         }
       })
@@ -32,8 +52,6 @@ export default {
 }
 </script>
 
-<style scoped>
-h1 {
-  color: red;
-}
+<style lang="less" scoped>
+@import url(../assets/style/notebooklist);
 </style>
