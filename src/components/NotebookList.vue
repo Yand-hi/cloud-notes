@@ -14,8 +14,8 @@
             <div>
               <span class="iconfont icon-notebook"></span>{{ notebook.title }}
               <span>{{ notebook.noteCounts }}</span>
-              <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
+              <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
               <span class="date">一天前</span>
             </div>
           </router-link>
@@ -64,7 +64,6 @@ export default {
         })
     },
     onEdit(notebook) {
-      console.log(notebook)
       let title = window.prompt('修改标题', notebook.title)
       Notebooks.updateNotebook(notebook.id, {title})
         .then(res => {
@@ -72,8 +71,15 @@ export default {
           alert(res.msg)
         })
     },
-    onDelete() {
-      console.log('onDelete...')
+    onDelete(notebook) {
+      let isConfirm = window.confirm(`确定要删除《${notebook.title}》吗?`)
+      if (isConfirm) {
+        Notebooks.deleteNotebook(notebook.id)
+          .then(res => {
+            this.notebooks.splice(this.notebooks.indexOf(notebook), 1)
+            alert(res.msg)
+          })
+      }
     },
   }
 }
