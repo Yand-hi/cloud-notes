@@ -28,6 +28,7 @@
 <script>
 import Auth from '../apis/auth'
 import Notebooks from '../apis/notebooks'
+import {friendlyDate} from '../helpers/util'
 
 export default {
   data() {
@@ -57,6 +58,7 @@ export default {
       Notebooks.addNotebook({title})
         .then(res => {
           console.log(res)
+          res.data.createdAt = friendlyDate(res.data.createdAt)
           this.notebooks.unshift(res.data)
           alert('创建成功')
         })

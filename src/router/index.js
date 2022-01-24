@@ -4,6 +4,7 @@ import Login from '../components/Login'
 import Notebooks from '../components/NotebookList'
 import Note from '../components/NoteDetail'
 import Trash from '../components/TrashDetail'
+import HelloWorld from '../components/HelloWorld'
 
 Vue.use(Router)
 
@@ -11,8 +12,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Login',
-      component: Login
+      name: 'HelloWorld',
+      component: HelloWorld
     },
     {
       path: '/login',
