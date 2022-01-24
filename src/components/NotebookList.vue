@@ -16,7 +16,7 @@
               <span>{{ notebook.noteCounts }}</span>
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
               <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
-              <span class="date">一天前</span>
+              <span class="date">{{ notebook.createdAt }}</span>
             </div>
           </router-link>
         </div>
@@ -28,8 +28,6 @@
 <script>
 import Auth from '../apis/auth'
 import Notebooks from '../apis/notebooks'
-
-window.Notebooks = Notebooks
 
 export default {
   data() {
@@ -63,6 +61,7 @@ export default {
           alert('创建成功')
         })
     },
+
     onEdit(notebook) {
       let title = window.prompt('修改标题', notebook.title)
       Notebooks.updateNotebook(notebook.id, {title})
