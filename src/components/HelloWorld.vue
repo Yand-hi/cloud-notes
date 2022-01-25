@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    123
     <el-switch
       v-model="value"
       active-color="#13ce66"
