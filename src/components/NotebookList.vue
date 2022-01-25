@@ -10,7 +10,8 @@
       <div class="layout">
         <h3>笔记本列表 {{ notebooks.length }}</h3>
         <div class="book-list">
-          <router-link to="/note/1" class="notebook" v-for="notebook in notebooks" :key="notebook.id">
+          <router-link :to="`/note?notebookId=${notebook.id}`" class="notebook" v-for="notebook in notebooks"
+                       :key="notebook.id">
             <div>
               <span class="iconfont icon-notebook"></span>{{ notebook.title }}
               <span>{{ notebook.noteCounts }}</span>
@@ -77,6 +78,7 @@ export default {
       this.$prompt('请输入笔记本新标题', '修改笔记本标题', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        inputValue: notebook.title,
         inputPattern: /^.{1,30}$/,
         inputErrorMessage: '标题不能为空，且不超过30个字符'
       }).then(({value}) => {

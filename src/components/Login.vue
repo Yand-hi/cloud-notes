@@ -70,7 +70,6 @@ export default {
             this.login.isError = false
             this.login.notice = ''
             this.$router.push({path: 'notebooks'})
-            console.log('start redirect...')
           }).catch(data => {
           this.login.isError = true
           this.login.notice = data.msg
