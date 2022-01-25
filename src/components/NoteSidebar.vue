@@ -28,25 +28,21 @@
 </template>
 
 <script>
+import Notebooks from '../apis/notebooks'
+import Notes from '../apis/notes'
+
+window.Notes = Notes
 
 export default {
-  name: "NoteSidebar",
+  created() {
+    Notebooks.getAll()
+      .then(res => {
+        this.notebooks = res.data
+      })
+  },
   data() {
     return {
-      notebooks: [
-        {
-          id: 1,
-          title: '笔记本一'
-        },
-        {
-          id: 2,
-          title: '笔记本二'
-        },
-        {
-          id: 3,
-          title: '笔记本三'
-        },
-      ],
+      notebooks: [],
       notes: [
         {
           id: 10,
@@ -68,7 +64,10 @@ export default {
   },
   methods: {
     handleCommand() {
-      console.log('ding...')
+      console.log(this.notebook)
+    },
+    created() {
+
     }
   }
 }
