@@ -20,8 +20,8 @@
     </div>
     <ul class="notes">
       <li v-for="note in notes" :key="note.id">
-        <router-link to="`/note?noteId=${note.id}`">
-          <span class="date">{{ note.updatedAt }}</span>
+        <router-link to=" `/note?noteId=${note.id}&notebookId=${currentBook.id}` ">
+          <span class="date">{{ note.updatedAtFriendly }}</span>
           <span class="title">{{ note.title }}</span>
         </router-link>
       </li>
@@ -33,15 +33,15 @@
 import Notebooks from '../apis/notebooks'
 import Notes from '../apis/notes'
 
+window.Notes = Notes
 export default {
   created() {
     Notebooks.getAll()
       .then(res => {
         this.notebooks = res.data
-        this.currentBook = this.notebooks.find(notebook => notebook.id === this.$route.query.notebookId)
+        this.currentBook = this.notebooks.find(notebook => notebook.id + '' === this.$route.query.notebookId)
           || this.notebooks[0] || {}
-        console.log(this.currentBook)
-        return Notes.getAll({notebookId: this.$route.query.notebookId})
+        return Notes.getAll({notebookId: this.currentBook.id})
       }).then(res => {
       this.notes = res.data
     })
@@ -55,12 +55,14 @@ export default {
   },
   methods: {
     handleCommand(notebookId) {
-      if (notebookId !== 'trash') {
-        Notes.getAll({notebookId})
-          .then(res => {
-            this.notes = res.data
-          })
+      if (notebookId === 'trash') {
+        return this.$router.push({path: '/trash'})
       }
+      this.currentBook = this.notebooks.find(notebook => notebook.id === notebookId)
+      Notes.getAll({notebookId})
+        .then(res => {
+          this.notes = res.data
+        })
     },
   }
 }
