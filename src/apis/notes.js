@@ -1,4 +1,5 @@
 import request from '../helpers/request'
+import {friendlyDate} from '../helpers/util'
 
 const URL = {
   GET: '/notes/from/:notebookId',
@@ -12,6 +13,13 @@ export default {
     return new Promise((resolve, reject) => {
       request(URL.GET.replace(':notebookId', notebookId))
         .then(res => {
+          res.data = res.data.map(note => {
+            note.createdAt = friendlyDate(note.createdAt)
+            note.updatedAt = friendlyDate(note.updatedAt)
+            return note
+          }).sort((note1, note2) => {
+            return note1.updatedAt < note2.updatedAt
+          })
           resolve(res)
         }).catch(error => {
         reject(error)
@@ -25,6 +33,6 @@ export default {
     return request(URL.DELETE.replace(':noteId', noteId), 'DELETE')
   },
   addNote({notebookId}, {title = '', content = ''} = {title: '', content: ''}) {
-    return request(URL.ADD.replace(':noteId', notebookId), 'POST', {title, content})
+    return request(URL.ADD.replace(':notebookId', notebookId), 'POST', {title, content})
   }
 }

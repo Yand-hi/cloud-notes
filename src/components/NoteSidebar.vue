@@ -3,14 +3,13 @@
     <span class="btn add-note"></span>
     <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
       <span class="el-dropdown-link">
-        我的笔记本1
+        {{ currentBook.title }}
         <i class="iconfont icon-down"></i>
       </span>
       <button class="add-note">添加笔记</button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item v-for="notebook in notebooks" :key="notebook.id" :command="notebook.id">{{
-            notebook.title
-          }}
+        <el-dropdown-item v-for="notebook in notebooks" :key="notebook.id" :command="notebook.id">
+          {{ notebook.title }}
         </el-dropdown-item>
         <el-dropdown-item command="trash">回收站</el-dropdown-item>
       </el-dropdown-menu>
@@ -22,7 +21,7 @@
     <ul class="notes">
       <li v-for="note in notes" :key="note.id">
         <router-link to="`/note?noteId=${note.id}`">
-          <span class="date">{{ note.createdAt }}</span>
+          <span class="date">{{ note.updatedAt }}</span>
           <span class="title">{{ note.title }}</span>
         </router-link>
       </li>
@@ -34,49 +33,35 @@
 import Notebooks from '../apis/notebooks'
 import Notes from '../apis/notes'
 
-window.Notes = Notes
-
 export default {
   created() {
     Notebooks.getAll()
       .then(res => {
         this.notebooks = res.data
-      })
+        this.currentBook = this.notebooks.find(notebook => notebook.id === this.$route.query.notebookId)
+          || this.notebooks[0] || {}
+        console.log(this.currentBook)
+        return Notes.getAll({notebookId: this.$route.query.notebookId})
+      }).then(res => {
+      this.notes = res.data
+    })
   },
   data() {
     return {
       notebooks: [],
-      notes: [
-        {
-          id: 10,
-          title: 'hello1',
-          createdAt: '刚刚'
-        },
-        {
-          id: 11,
-          title: 'hello2',
-          createdAt: '十分钟前'
-        },
-        {
-          id: 12,
-          title: 'hello3',
-          createdAt: '一小时前'
-        },
-      ]
+      notes: [],
+      currentBook: {}
     }
   },
   methods: {
     handleCommand(notebookId) {
       if (notebookId !== 'trash') {
-        Notes.getAll(notebookId)
+        Notes.getAll({notebookId})
           .then(res => {
             this.notes = res.data
           })
       }
     },
-    created() {
-
-    }
   }
 }
 </script>
