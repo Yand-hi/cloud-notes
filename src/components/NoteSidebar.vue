@@ -8,7 +8,10 @@
       </span>
       <button class="add-note">添加笔记</button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item v-for="notebook in notebooks" :key="notebook.id">{{ notebook.title }}</el-dropdown-item>
+        <el-dropdown-item v-for="notebook in notebooks" :key="notebook.id" :command="notebook.id">{{
+            notebook.title
+          }}
+        </el-dropdown-item>
         <el-dropdown-item command="trash">回收站</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -63,8 +66,13 @@ export default {
     }
   },
   methods: {
-    handleCommand() {
-      console.log(this.notebook)
+    handleCommand(notebookId) {
+      if (notebookId !== 'trash') {
+        Notes.getAll(notebookId)
+          .then(res => {
+            this.notes = res.data
+          })
+      }
     },
     created() {
 
