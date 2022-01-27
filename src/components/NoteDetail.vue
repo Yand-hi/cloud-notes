@@ -1,19 +1,19 @@
 <template>
   <div id="note" class="detail">
-    <note-sidebar></note-sidebar>
+    <note-sidebar @update:notes="val=>notes=val"></note-sidebar>
     <div class="note-detail">
       <div class="note-bar">
-        <span> 创建日期: 两天前</span>
-        <span> 更新日期: 一分钟前</span>
-        <span>已保存</span>
+        <span> 创建日期: {{ currentNote.createdAtFriendly }}</span>
+        <span> 更新日期: {{ currentNote.updatedAtFriendly }}</span>
+        <span>{{ currentNote.statusText }}</span>
         <span class="iconfont icon-delete"></span>
         <span class="iconfont icon-fullscreen"></span>
       </div>
       <div class="note-title">
-        <input type="text" placeholder="输入标题">
+        <input type="text" :value="currentNote.title" placeholder="输入标题">
       </div>
       <div class="editor">
-        <textarea v-show="true" placeholder="输入内容, 支持 markdown 语法"></textarea>
+        <textarea v-show="true" :value="currentNote.content" placeholder="输入内容, 支持 markdown 语法"></textarea>
         <div class="preview markdown-body" v-html="" v-show="false">
         </div>
       </div>
@@ -30,9 +30,11 @@ export default {
   components: {NoteSidebar},
   data() {
     return {
-      msg: '笔记本详情页'
+      currentNote: {},
+      notes: []
     }
   },
+
   created() {
     Auth.getInfo()
       .then(res => {
@@ -40,7 +42,13 @@ export default {
           this.$router.push({path: 'login'})
         }
       })
-  }
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.currentNote = this.notes.find(note => note.id + '' === to.query.noteId)
+    next()
+  },
+
 }
 </script>
 
