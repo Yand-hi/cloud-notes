@@ -6,7 +6,7 @@
         {{ currentBook.title }}
         <i class="iconfont icon-down"></i>
       </span>
-      <button class="add-note">添加笔记</button>
+      <button class="add-note" @click="addNote">添加笔记</button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item v-for="notebook in notebooks" :key="notebook.id" :command="notebook.id">
           {{ notebook.title }}
@@ -69,6 +69,13 @@ export default {
           this.$emit('update:notes', this.notes)
         })
     },
+
+    addNote() {
+      Notes.addNote({notebookId: this.currentBook.id})
+        .then(res => {
+          this.notes.unshift(res.data)
+        })
+    }
   }
 }
 </script>
