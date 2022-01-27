@@ -47,6 +47,7 @@ export default {
       this.$emit('update:notes', this.notes)
     })
   },
+
   data() {
     return {
       notebooks: [],
@@ -54,6 +55,7 @@ export default {
       currentBook: {}
     }
   },
+
   methods: {
     handleCommand(notebookId) {
       if (notebookId === 'trash') {

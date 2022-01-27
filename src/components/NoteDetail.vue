@@ -1,6 +1,6 @@
 <template>
   <div id="note" class="detail">
-    <note-sidebar @update:notes="val=>notes=val"></note-sidebar>
+    <note-sidebar @update:notes="val => notes = val"></note-sidebar>
     <div class="note-detail">
       <div class="note-bar">
         <span> 创建日期: {{ currentNote.createdAtFriendly }}</span>
@@ -10,14 +10,13 @@
         <span class="iconfont icon-fullscreen"></span>
       </div>
       <div class="note-title">
-        <input type="text" :value="currentNote.title" placeholder="输入标题">
+        <input type="text" v-model:value="currentNote.title" placeholder="输入标题">
       </div>
       <div class="editor">
-        <textarea v-show="true" :value="currentNote.content" placeholder="输入内容, 支持 markdown 语法"></textarea>
+        <textarea v-show="true" v-model:value="currentNote.content" placeholder="输入内容, 支持 markdown 语法"></textarea>
         <div class="preview markdown-body" v-html="" v-show="false">
         </div>
       </div>
-
     </div>
   </div>
 </template>
