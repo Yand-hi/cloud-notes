@@ -3,13 +3,13 @@
     <note-sidebar @update:notes="val => notes = val"></note-sidebar>
     <div class="note-detail">
       <div class="note-empty" v-show="!currentNote.id">请选择笔记</div>
-      <div v-show="currentNote.id">
+      <div class="note-detail-ct" v-show="currentNote.id">
         <div class="note-bar">
           <span> 创建日期: {{ currentNote.createdAtFriendly }}</span>
           <span> 更新日期: {{ currentNote.updatedAtFriendly }}</span>
           <span>{{ statusText }}</span>
           <span class="iconfont icon-delete" @click="deleteNote"></span>
-          <span class="iconfont icon-fullscreen"></span>
+          <span class="iconfont icon-fullscreen" @click="isShowPreview=!isShowPreview"></span>
         </div>
         <div class="note-title">
           <input type="text"
@@ -18,11 +18,13 @@
                  placeholder="输入标题">
         </div>
         <div class="editor">
-          <textarea v-show="true" v-model:value="currentNote.content"
+          <textarea v-show="!isShowPreview" v-model:value="currentNote.content"
                     @input="updateNote"
                     @keydown="statusText='正在输入...'"
                     placeholder="请输入内容, 支持 markdown 语法"></textarea>
-          <div class="preview markdown-body" v-html="" v-show="false"></div>
+          <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview">
+            {{ previewContent }}
+          </div>
         </div>
       </div>
     </div>
@@ -34,7 +36,10 @@ import NoteSidebar from './NoteSidebar'
 import Notes from '../apis/notes'
 import Bus from '../helpers/bus'
 import Auth from '../apis/auth'
+import MarkdownIt from 'markdown-it'
 import _ from 'lodash'
+
+let md = new MarkdownIt
 
 export default {
   components: {NoteSidebar},
@@ -42,7 +47,8 @@ export default {
     return {
       currentNote: {},
       notes: [],
-      statusText: '未改动'
+      statusText: '未改动',
+      isShowPreview: false,
     }
   },
 
@@ -82,6 +88,12 @@ export default {
           this.$message.success(data.msg)
           this.router.replace({path: '/note'})
         })
+    },
+  },
+
+  computed: {
+    previewContent() {
+      return md.render(this.currentNote.content || '')
     }
   }
 
