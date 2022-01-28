@@ -21,8 +21,8 @@ export default {
             return note1.updatedAt < note2.updatedAt
           })
           resolve(res)
-        }).catch(error => {
-        reject(error)
+        }).catch(err => {
+        reject(err)
       })
     })
   },

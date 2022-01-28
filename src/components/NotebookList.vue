@@ -17,7 +17,7 @@
               <span>{{ notebook.noteCounts }}</span>
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
               <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
-              <span class="date">{{ notebook.createdAt }}</span>
+              <span class="date">{{ notebook.createdAtFriendly }}</span>
             </div>
           </router-link>
         </div>
@@ -30,12 +30,11 @@
 import Auth from '../apis/auth'
 import Notebooks from '../apis/notebooks'
 import {friendlyDate} from '../helpers/util'
+import {mapGetters} from 'vuex'
 
 export default {
   data() {
-    return {
-      notebooks: []
-    }
+    return {}
   },
   created() {
     Auth.getInfo()
@@ -44,11 +43,17 @@ export default {
           this.$router.push({path: 'login'})
         }
       })
-    Notebooks.getAll()
-      .then(res => {
-        this.notebooks = res.data
-      })
+    // Notebooks.getAll()
+    //   .then(res => {
+    //     this.notebooks = res.data
+    //   })
+    this.$store.dispatch('getNotebooks')
   },
+
+  computed: {
+    ...mapGetters(['notebooks'])
+  },
+
   methods: {
     onCreate() {
       this.$prompt('请输入笔记本标题', '创建笔记本', {
@@ -59,7 +64,7 @@ export default {
       }).then(({value}) => {
         return Notebooks.addNotebook({title: value})
       }).then(res => {
-        res.data.createdAt = friendlyDate(res.data.createdAt)
+        res.data.createdAtFriendly = friendlyDate(res.data.createdAt)
         this.notebooks.unshift(res.data)
         this.$message({
           type: 'success',
