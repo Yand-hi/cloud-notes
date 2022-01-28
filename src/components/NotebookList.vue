@@ -17,7 +17,7 @@
               <span>{{ notebook.noteCounts }}</span>
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
               <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
-              <span class="date">{{ notebook.createdAtFriendly }}</span>
+              <span class="date">{{ notebook.friendlyCreatedAt }}</span>
             </div>
           </router-link>
         </div>
@@ -30,7 +30,7 @@
 import Auth from '../apis/auth'
 import Notebooks from '../apis/notebooks'
 import {friendlyDate} from '../helpers/util'
-import {mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
   data() {
@@ -43,10 +43,6 @@ export default {
           this.$router.push({path: 'login'})
         }
       })
-    // Notebooks.getAll()
-    //   .then(res => {
-    //     this.notebooks = res.data
-    //   })
     this.$store.dispatch('getNotebooks')
   },
 
@@ -55,6 +51,13 @@ export default {
   },
 
   methods: {
+    ...mapActions([
+      'getNotebooks',
+      'addNotebook',
+      'updateNotebook',
+      'deleteNotebook'
+    ])
+    ,
     onCreate() {
       this.$prompt('请输入笔记本标题', '创建笔记本', {
         confirmButtonText: '确定',
@@ -62,20 +65,8 @@ export default {
         inputPattern: /^.{1,30}$/,
         inputErrorMessage: '标题不能为空，且不超过30个字符'
       }).then(({value}) => {
-        return Notebooks.addNotebook({title: value})
-      }).then(res => {
-        res.data.createdAtFriendly = friendlyDate(res.data.createdAt)
-        this.notebooks.unshift(res.data)
-        this.$message({
-          type: 'success',
-          message: '创建成功'
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        });
-      });
+        this.addNotebook({title: value})
+      })
     },
 
     onEdit(notebook) {
@@ -88,19 +79,8 @@ export default {
         inputErrorMessage: '标题不能为空，且不超过30个字符'
       }).then(({value}) => {
         title = value
-        return Notebooks.updateNotebook(notebook.id, {title})
-      }).then(res => {
-        notebook.title = title
-        this.$message({
-          type: 'success',
-          message: res.msg
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        });
-      });
+        this.updateNotebook({notebookId: notebook.id, title})
+      })
     },
 
     onDelete(notebook) {
@@ -109,20 +89,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return Notebooks.deleteNotebook(notebook.id)
+        this.deleteNotebook({notebookId: notebook.id})
       }).then(res => {
         this.notebooks.splice(this.notebooks.indexOf(notebook), 1)
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
+      })
     },
   }
 }
