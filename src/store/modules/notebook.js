@@ -35,7 +35,21 @@ const actions = {
   addNotebook({commit}, payload) {
     Notebooks.addNotebook({title: payload.title})
       .then(res => {
-        commit('addNotebook', {title: res.title})
+        commit('addNotebook', {notebook: res.data})
+      })
+  },
+
+  updateNotebook({commit}, payload) {
+    Notebooks.updateNotebook(payload.notebookId, {title: payload.title})
+      .then(res => {
+        commit('updateNotebook', {notebookId: payload.notebookId, title: payload.title})
+      })
+  },
+
+  deleteNotebook({commit}, payload) {
+    Notebooks.deleteNotebook(payload.notebookId)
+      .then(res => {
+        commit('deleteNotebook', {notebookId: payload.notebookId})
       })
   }
 }
