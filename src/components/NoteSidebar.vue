@@ -33,6 +33,7 @@
 import Notebooks from '../apis/notebooks'
 import Notes from '../apis/notes'
 import Bus from '../helpers/bus'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 
 export default {
   created() {

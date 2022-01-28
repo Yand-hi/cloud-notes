@@ -1,4 +1,5 @@
 import Notebooks from '@/apis/notebooks'
+import {Message} from 'element-ui'
 
 const state = {
   notebooks: []
@@ -36,6 +37,7 @@ const actions = {
     Notebooks.addNotebook({title: payload.title})
       .then(res => {
         commit('addNotebook', {notebook: res.data})
+        Message.success(res.msg)
       })
   },
 
@@ -43,6 +45,7 @@ const actions = {
     Notebooks.updateNotebook(payload.notebookId, {title: payload.title})
       .then(res => {
         commit('updateNotebook', {notebookId: payload.notebookId, title: payload.title})
+        Message.success(res.msg)
       })
   },
 
@@ -50,6 +53,7 @@ const actions = {
     Notebooks.deleteNotebook(payload.notebookId)
       .then(res => {
         commit('deleteNotebook', {notebookId: payload.notebookId})
+        Message.success(res.msg)
       })
   }
 }

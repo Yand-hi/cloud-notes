@@ -28,9 +28,7 @@
 
 <script>
 import Auth from '../apis/auth'
-import Notebooks from '../apis/notebooks'
-import {friendlyDate} from '../helpers/util'
-import {mapActions, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 
 export default {
   data() {
