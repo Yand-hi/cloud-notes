@@ -2,11 +2,17 @@ import Notebooks from '@/apis/notebooks'
 import {Message} from 'element-ui'
 
 const state = {
-  notebooks: []
+  notebooks: null,
+  currentBookId: null
 }
 
 const getters = {
-  notebooks: state => state.notebooks
+  notebooks: state => state.notebooks || [],
+  currentBook: state => {
+    if (!Array.isArray(state.notebooks)) return {}
+    if (!state.currentBookId) return state.notebooks[0]
+    return state.notebooks.find(notebook => notebook.id + '' === state.currentBookId)
+  }
 }
 
 const mutations = {
@@ -17,24 +23,27 @@ const mutations = {
     state.notebooks.unshift(payload.notebook)
   },
   updateNotebook(state, payload) {
-    const notebook = state.notebooks.find(notebook => notebook.id === payload.notebookId) || {}
+    const notebook = state.notebooks.find(notebook => notebook.id + '' === payload.notebookId) || {}
     notebook.title = payload.title
   },
   deleteNotebook(state, payload) {
-    state.notebooks.filter(notebook => notebook.id !== payload.notebookId)
+    state.notebooks.filter(notebook => notebook.id + '' !== payload.notebookId)
+  },
+  setCurrentBook(state, payload) {
+    state.currentBookId = payload.currentBookId
   }
 }
 
 const actions = {
   getNotebooks({commit}) {
-    Notebooks.getAll()
+    return Notebooks.getAll()
       .then(res => {
         commit('setNotebooks', {notebooks: res.data})
       })
   },
 
   addNotebook({commit}, payload) {
-    Notebooks.addNotebook({title: payload.title})
+    return Notebooks.addNotebook({title: payload.title})
       .then(res => {
         commit('addNotebook', {notebook: res.data})
         Message.success(res.msg)
@@ -42,7 +51,7 @@ const actions = {
   },
 
   updateNotebook({commit}, payload) {
-    Notebooks.updateNotebook(payload.notebookId, {title: payload.title})
+    return Notebooks.updateNotebook(payload.notebookId, {title: payload.title})
       .then(res => {
         commit('updateNotebook', {notebookId: payload.notebookId, title: payload.title})
         Message.success(res.msg)
@@ -50,7 +59,7 @@ const actions = {
   },
 
   deleteNotebook({commit}, payload) {
-    Notebooks.deleteNotebook(payload.notebookId)
+    return Notebooks.deleteNotebook(payload.notebookId)
       .then(res => {
         commit('deleteNotebook', {notebookId: payload.notebookId})
         Message.success(res.msg)
