@@ -51,14 +51,14 @@ const actions = {
   },
 
   updateNote({commit}, {noteId, title, content}) {
-    return Note.updateNote(noteId, {title, content})
+    return Note.updateNote({noteId}, {title, content})
       .then(res => {
-        commit('updateNote', {noteId}, {title, content})
+        commit('updateNote', {noteId, title, content})
       })
   },
 
   deleteNote({commit}, {noteId}) {
-    return Note.deleteNote(noteId)
+    return Note.deleteNote({noteId})
       .then(res => {
         commit('deleteNotebook', {noteId})
         Message.success(res.msg)
