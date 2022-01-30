@@ -36,9 +36,11 @@ export default {
   created() {
     this.getNotebooks()
       .then(() => {
-        this.$store.commit('setCurrentBook', {currentBookId: this.$route.query.notebookId})
-        this.getNotes({notebookId: this.currentBook.id})
-      })
+        this.setCurrentBook({currentBookId: this.$route.query.notebookId})
+        return this.getNotes({notebookId: this.currentBook.id})
+      }).then(() => {
+      this.setCurrentNote({currentNoteId: this.$route.query.noteId})
+    })
   },
 
   data() {
@@ -54,6 +56,11 @@ export default {
   },
 
   methods: {
+    ...mapMutations([
+      'setCurrentBook',
+      'setCurrentNote'
+    ]),
+
     ...mapActions([
       'getNotebooks',
       'getNotes',
