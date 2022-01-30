@@ -11,7 +11,7 @@ const getters = {
   currentBook: state => {
     if (!Array.isArray(state.notebooks)) return {}
     if (!state.currentBookId) return state.notebooks[0]
-    return state.notebooks.find(notebook => notebook.id + '' === state.currentBookId)
+    return state.notebooks.find(notebook => notebook.id == state.currentBookId)
   }
 }
 
@@ -23,11 +23,11 @@ const mutations = {
     state.notebooks.unshift(payload.notebook)
   },
   updateNotebook(state, payload) {
-    const notebook = state.notebooks.find(notebook => notebook.id + '' === payload.notebookId) || {}
+    const notebook = state.notebooks.find(notebook => notebook.id == payload.notebookId) || {}
     notebook.title = payload.title
   },
   deleteNotebook(state, payload) {
-    state.notebooks.filter(notebook => notebook.id + '' !== payload.notebookId)
+    state.notebooks.filter(notebook => notebook.id != payload.notebookId)
   },
   setCurrentBook(state, payload) {
     state.currentBookId = payload.currentBookId

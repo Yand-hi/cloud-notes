@@ -14,29 +14,29 @@ const mutations = {
   setNote(state, {notes}) {
     state.notes = notes
   },
-  addNote(state, {notes}) {
-    state.notes.unshift(notes)
+  addNote(state, {note}) {
+    state.notes.unshift(note)
   },
   updateNote(state, {noteId, title, content}) {
-    const note = state.notes.find(note => note.id === noteId) || {}
+    let note = state.notes.find(note => note.id === noteId) || {}
     note.title = title
     note.content = content
   },
   deleteNote(state, {noteId}) {
-    state.notes.filter(note => note.id !== noteId)
+    state.notes = state.notes.filter(note => note.id !== noteId)
   },
 }
 
 const actions = {
   getNotes({commit}, {notebookId}) {
-    Note.getAll({notebookId: notebookId})
+    Note.getAll({notebookId})
       .then(res => {
         commit('setNote', {notes: res.data})
       })
   },
 
   addNote({commit}, {notebookId, title, content}) {
-    Note.addNote({notebookId: notebookId}, {title: title, content: content})
+    Note.addNote({notebookId}, {title, content})
       .then(res => {
         commit('addNote', {note: res.data})
         Message.success(res.msg)
@@ -44,9 +44,9 @@ const actions = {
   },
 
   updateNote({commit}, {noteId, title, content}) {
-    Note.updateNote(noteId, {title: title, content: content})
+    Note.updateNote(noteId, {title, content})
       .then(res => {
-        commit('updateNote', {noteId: noteId}, {title: title, content: content})
+        commit('updateNote', {noteId}, {title, content})
         Message.success(res.msg)
       })
   },
@@ -54,7 +54,7 @@ const actions = {
   deleteNote({commit}, {noteId}) {
     Note.deleteNote(noteId)
       .then(res => {
-        commit('deleteNote', {noteId: noteId})
+        commit('deleteNote', {noteId})
         Message.success(res.msg)
       })
   }
