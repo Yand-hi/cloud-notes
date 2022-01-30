@@ -27,21 +27,15 @@
 </template>
 
 <script>
-import Auth from '../apis/auth'
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   data() {
     return {}
   },
   created() {
-    Auth.getInfo()
-      .then(data => {
-        if (!data.isLogin) {
-          this.$router.push({path: 'login'})
-        }
-      })
-    this.$store.dispatch('getNotebooks')
+    this.checkLogin({path: 'login'})
+    this.getNotebooks()
   },
 
   computed: {
@@ -53,7 +47,8 @@ export default {
       'getNotebooks',
       'addNotebook',
       'updateNotebook',
-      'deleteNotebook'
+      'deleteNotebook',
+      'checkLogin'
     ])
     ,
     onCreate() {

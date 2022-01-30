@@ -1,14 +1,12 @@
 import Auth from '@/apis/auth'
 import router from '@/router'
 
-window.router = router
 const state = {
   user: null
 }
 
 const getters = {
   username: state => state.user === null ? '未登录' : state.user.username,
-  slug: state => state.user === null ? '未' : state.user.username.charAt(0)
 }
 
 const mutations = {

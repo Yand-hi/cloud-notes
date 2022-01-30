@@ -30,12 +30,7 @@
 </template>
 
 <script>
-import Auth from '../apis/auth'
-
-// Auth.getInfo()
-//   .then(data => {
-//     console.log(data)
-//   })
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'Login',
@@ -57,16 +52,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      loginUser: 'login',
+      registerUser: 'register'
+    }),
+
     toggleShow() {
       return this.show = !this.show
     },
+
     onLogin() {
       if (!this.login.username || !this.login.password) {
         this.login.isError = true
         this.login.notice = '用户名和密码不能为空'
       } else {
-        Auth.login({username: this.login.username, password: this.login.password})
-          .then(data => {
+        this.loginUser({username: this.login.username, password: this.login.password})
+          .then(() => {
             this.login.isError = false
             this.login.notice = ''
             this.$router.push({path: 'notebooks'})
@@ -76,6 +77,7 @@ export default {
         })
       }
     },
+
     onRegister() {
       const usernameTest = /^[a-zA-Z0-9_-]{6,16}$/.test(this.register.username)
       const passwordTest = /^[a-zA-Z0-9_-]{6,16}$/.test(this.register.password)
@@ -83,8 +85,8 @@ export default {
         this.register.isError = true
         window.alert('用户名和密码必须是6-16位数字字母或下划线的任意组合')
       } else {
-        Auth.register({username: this.register.username, password: this.register.password})
-          .then(data => {
+        this.registerUser({username: this.register.username, password: this.register.password})
+          .then(() => {
             this.register.isError = false
             this.register.notice = ''
             this.$router.push({path: 'notebooks'})

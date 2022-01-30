@@ -10,7 +10,7 @@ const getters = {
   notebooks: state => state.notebooks || [],
   currentBook: state => {
     if (!Array.isArray(state.notebooks)) return {}
-    if (!state.currentBookId) return state.notebooks[0]
+    if (!state.currentBookId) return state.notebooks[0] || {}
     return state.notebooks.find(notebook => notebook.id === state.currentBookId - 0)
   }
 }

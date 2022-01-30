@@ -34,7 +34,6 @@
 
 <script>
 import NoteSidebar from './NoteSidebar'
-import Auth from '../apis/auth'
 import MarkdownIt from 'markdown-it'
 import _ from 'lodash'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
@@ -52,12 +51,7 @@ export default {
   },
 
   created() {
-    Auth.getInfo()
-      .then(res => {
-        if (!res.isLogin) {
-          this.$router.push({path: 'login'})
-        }
-      })
+    this.checkLogin({path: 'login'})
   },
 
   beforeRouteUpdate(to, from, next) {
@@ -72,7 +66,8 @@ export default {
 
     ...mapActions([
       'updateNote',
-      'deleteNote'
+      'deleteNote',
+      'checkLogin'
     ]),
 
     onUpdateNote: _.debounce(function () {

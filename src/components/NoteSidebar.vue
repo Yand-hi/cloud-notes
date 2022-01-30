@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
   created() {
