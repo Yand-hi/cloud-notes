@@ -37,30 +37,89 @@
 </template>
 
 <script>
+
 import MarkdownIt from 'markdown-it'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 
+let md = new MarkdownIt()
+
 export default {
   data() {
-    return {
-      msg: '回收站笔记详情页'
-    }
+    return {}
   },
 
   created() {
     this.checkLogin({path: '/login'})
+    this.getNotebooks()
+    this.getTrashNotes()
+      .then(() => {
+        this.setCurTrashNote({curTrashNoteId: this.$route.query.noteId})
+      })
+  },
+
+  computed: {
+    ...mapGetters([
+      'trashNotes',
+      'curTrashNote',
+      'belongTo'
+    ]),
+
+    compiledMarkdown() {
+      return md.render(this.curTrashNote.content || '')
+    }
   },
 
   methods: {
+    ...mapMutations([
+      'setCurTrashNote'
+    ]),
+
     ...mapActions([
-      'checkLogin'
-    ])
+      'checkLogin',
+      'deleteTrashNote',
+      'revertTrashNote',
+      'getTrashNotes',
+      'getNotebooks'
+    ]),
+
+    onDelete() {
+      console.log({noteId: this.curTrashNote.id})
+      this.deleteTrashNote({noteId: this.curTrashNote.id})
+    },
+
+    onRevert() {
+      this.revertTrashNote({noteId: this.curTrashNote.id})
+    }
+
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.setCurTrashNote({curTrashNoteId: to.query.noteId})
+    next()
   }
+
 }
 </script>
 
-<style scoped>
-h1 {
-  color: blue;
+<style lang="less">
+@import url(../assets/style/note-sidebar.less);
+@import url(../assets/style/note-detail.less);
+
+#trash {
+  display: flex;
+  align-items: stretch;
+  background-color: #fff;
+  flex: 1;
+
+  .note-bar {
+    .action {
+      float: right;
+      margin-left: 10px;
+      padding: 2px 4px;
+      font-size: 12px;
+
+    }
+  }
 }
+
 </style>
