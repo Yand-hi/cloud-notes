@@ -23,6 +23,14 @@ const actions = {
       })
   },
 
+  logout({commit}, payload = {path: '/login'}) {
+    return Auth.logout()
+      .then(() => {
+        commit('setUser', {user: null})
+        router.push(payload)
+      })
+  },
+
   register({commit}, {username, password}) {
     return Auth.register({username, password})
       .then(res => {

@@ -83,7 +83,6 @@ export default {
       const passwordTest = /^[a-zA-Z0-9_-]{6,16}$/.test(this.register.password)
       if (!usernameTest || !passwordTest) {
         this.register.isError = true
-        window.alert('用户名和密码必须是6-16位数字字母或下划线的任意组合')
       } else {
         this.registerUser({username: this.register.username, password: this.register.password})
           .then(() => {
