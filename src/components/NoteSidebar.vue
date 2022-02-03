@@ -37,9 +37,16 @@ export default {
     this.getNotebooks()
       .then(() => {
         this.setCurrentBook({currentBookId: this.$route.query.notebookId})
-        return this.getNotes({notebookId: this.currentBook.id})
+        if (this.currentBook.id) return this.getNotes({notebookId: this.currentBook.id})
       }).then(() => {
       this.setCurrentNote({currentNoteId: this.$route.query.noteId})
+      this.$router.replace({
+        path: '/note',
+        query: {
+          noteId: this.currentNote.id,
+          notebookId: this.currentBook.id
+        }
+      })
     })
   },
 
@@ -51,7 +58,8 @@ export default {
     ...mapGetters([
       'notebooks',
       'notes',
-      'currentBook'
+      'currentBook',
+      'currentNote'
     ])
   },
 
@@ -72,7 +80,16 @@ export default {
         return this.$router.push({path: '/trash'})
       }
       this.$store.commit('setCurrentBook', {currentBookId: notebookId})
-      this.getNotes({notebookId})
+      this.getNotes({notebookId}).then(() => {
+        this.setCurrentNote()
+        this.$router.replace({
+          path: '/note',
+          query: {
+            noteId: this.currentNote.id,
+            notebookId: this.currentBook.id
+          }
+        })
+      })
     },
 
     onAddNote() {

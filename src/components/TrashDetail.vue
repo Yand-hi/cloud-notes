@@ -83,7 +83,6 @@ export default {
     ]),
 
     onDelete() {
-      console.log({noteId: this.curTrashNote.id})
       this.deleteTrashNote({noteId: this.curTrashNote.id})
     },
 

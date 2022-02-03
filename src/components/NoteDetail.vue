@@ -85,7 +85,7 @@ export default {
     onDeleteNote() {
       this.deleteNote({noteId: this.currentNote.id})
         .then(data => {
-          this.router.replace({path: '/note'})
+          this.$router.replace({path: '/note'})
         })
     },
   },
@@ -100,7 +100,6 @@ export default {
       return md.render(this.currentNote.content || '')
     }
   }
-
 }
 </script>
 
