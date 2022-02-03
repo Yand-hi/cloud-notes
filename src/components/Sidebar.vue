@@ -27,7 +27,13 @@ export default {
   methods: {
     ...mapActions(['logout']),
     onLogout() {
-      this.logout({path: '/login'})
+      this.$confirm('确认退出', '是否退出当前帐号', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.logout({path: '/login'})
+      })
     }
   }
 }

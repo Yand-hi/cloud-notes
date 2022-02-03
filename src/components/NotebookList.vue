@@ -77,7 +77,7 @@ export default {
     },
 
     onDelete(notebook) {
-      this.$confirm('笔记本删除后无法恢复', '是否继续删除', {
+      this.$confirm('确认删除', '是否删除当前笔记本', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

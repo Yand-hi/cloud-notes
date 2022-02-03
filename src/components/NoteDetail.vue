@@ -19,12 +19,9 @@
                  placeholder="输入标题">
         </div>
         <div class="editor">
-          <textarea v-show="!isShowPreview" v-model:value="currentNote.content"
-                    @input="onUpdateNote"
-                    @keydown="statusText='正在输入...'"
-                    placeholder="请输入内容, 支持 markdown 语法"></textarea>
+          <codemirror v-model="currentNote.content" :options="cmOptions" v-show="!isShowPreview" @input="onUpdateNote"
+                      @inputRead="statusText='正在输入...'"></codemirror>
           <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview">
-            {{ previewContent }}
           </div>
         </div>
       </div>
@@ -37,16 +34,27 @@ import NoteSidebar from './NoteSidebar'
 import MarkdownIt from 'markdown-it'
 import _ from 'lodash'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import {codemirror} from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/markdown/markdown.js'
+import 'codemirror/theme/neat.css'
 
 
 let md = new MarkdownIt
 
 export default {
-  components: {NoteSidebar},
+  components: {NoteSidebar, codemirror},
   data() {
     return {
       statusText: '未改动',
       isShowPreview: false,
+      cmOptions: {
+        tabSize: 4,
+        mode: 'text/x-markdown',
+        theme: 'neat',
+        lineNumbers: false,
+        line: true,
+      }
     }
   },
 
@@ -75,16 +83,16 @@ export default {
         noteId: this.currentNote.id,
         title: this.currentNote.title,
         content: this.currentNote.content
-      }).then(data => {
+      }).then(() => {
         this.statusText = '已保存'
       }).catch(err => {
         this.statusText = '保存失败'
       })
-    }, 300),
+    }, 500),
 
     onDeleteNote() {
       this.deleteNote({noteId: this.currentNote.id})
-        .then(data => {
+        .then(() => {
           this.$router.replace({path: '/note'})
         })
     },
@@ -93,7 +101,8 @@ export default {
   computed: {
     ...mapGetters([
       'notes',
-      'currentNote'
+      'currentNote',
+      'currentBook'
     ]),
 
     previewContent() {
