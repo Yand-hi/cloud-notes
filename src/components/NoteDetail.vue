@@ -9,7 +9,7 @@
           <span> 更新日期: {{ currentNote.updatedAtFriendly }}</span>
           <span>{{ statusText }}</span>
           <span class="iconfont icon-delete" @click="onDeleteNote"></span>
-          <span class="iconfont icon-fullscreen" @click="isShowPreview=!isShowPreview"></span>
+          <span class="iconfont icon-preview" @click="isShowPreview=!isShowPreview"></span>
         </div>
         <div class="note-title">
           <input type="text"
@@ -19,9 +19,12 @@
                  placeholder="输入标题">
         </div>
         <div class="editor">
-          <codemirror v-model="currentNote.content" :options="cmOptions" v-show="!isShowPreview" @input="onUpdateNote"
-                      @inputRead="statusText='正在输入...'"></codemirror>
+          <textarea v-show="!isShowPreview" v-model:value="currentNote.content"
+                    @input="onUpdateNote"
+                    @keydown="statusText='正在输入...'"
+                    placeholder="请输入内容, 支持 markdown 语法"></textarea>
           <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview">
+            {{ previewContent }}
           </div>
         </div>
       </div>
@@ -34,27 +37,15 @@ import NoteSidebar from './NoteSidebar'
 import MarkdownIt from 'markdown-it'
 import _ from 'lodash'
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-import {codemirror} from 'vue-codemirror'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/mode/markdown/markdown.js'
-import 'codemirror/theme/neat.css'
-
 
 let md = new MarkdownIt
 
 export default {
-  components: {NoteSidebar, codemirror},
+  components: {NoteSidebar},
   data() {
     return {
       statusText: '未改动',
       isShowPreview: false,
-      cmOptions: {
-        tabSize: 4,
-        mode: 'text/x-markdown',
-        theme: 'neat',
-        lineNumbers: false,
-        line: true,
-      }
     }
   },
 
@@ -88,7 +79,7 @@ export default {
       }).catch(err => {
         this.statusText = '保存失败'
       })
-    }, 500),
+    }, 300),
 
     onDeleteNote() {
       this.deleteNote({noteId: this.currentNote.id})
