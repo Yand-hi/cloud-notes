@@ -77,14 +77,12 @@ export default {
     },
 
     onDelete(notebook) {
-      this.$confirm('是否继续删除?', '删除后可在回收站查看', {
+      this.$confirm('笔记本删除后无法恢复', '是否继续删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.deleteNotebook({notebookId: notebook.id})
-      }).then(res => {
-        this.notebooks.splice(this.notebooks.indexOf(notebook), 1)
       })
     },
   }
