@@ -8,6 +8,12 @@ import HelloWorld from '../components/HelloWorld'
 
 Vue.use(Router)
 
+const originalPush = Router.prototype.push;
+Router.prototype.replace = function replace(location) {
+  return originalPush.call(this, location).catch((error) => {
+  });
+};
+
 export default new Router({
   routes: [
     {
