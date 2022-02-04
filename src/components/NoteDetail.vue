@@ -8,8 +8,8 @@
           <span> 创建日期: {{ currentNote.createdAtFriendly }}</span>
           <span> 更新日期: {{ currentNote.updatedAtFriendly }}</span>
           <span>{{ statusText }}</span>
-          <span class="iconfont icon-delete" @click="onDeleteNote"></span>
-          <span class="iconfont icon-preview" @click="isShowPreview=!isShowPreview"></span>
+          <span class="iconfont icon-delete" @click="onDeleteNote" title="放入回收站"></span>
+          <span class="iconfont icon-preview" @click="isShowPreview=!isShowPreview" title="点击预览"></span>
         </div>
         <div class="note-title">
           <input type="text"

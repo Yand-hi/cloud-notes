@@ -5,7 +5,7 @@
       <router-link to="/note" title="笔记">
         <i class="iconfont icon-note"/>
       </router-link>
-      <router-link to="/notebooks" title="笔记簿">
+      <router-link to="/notebooks" title="笔记本">
         <i class="iconfont icon-notebook"/>
       </router-link>
       <router-link to="/trash" title="回收站">
@@ -58,7 +58,7 @@ export default {
 
 .icons .router-link-active {
   background: #5e6266;
-  border-right: 3px solid #00b548;
+  border-right: 4px solid #2dbe61;
 }
 
 .logout {

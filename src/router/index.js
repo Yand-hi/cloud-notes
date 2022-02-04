@@ -18,16 +18,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      alias: '/notebooks',
+      component: Notebooks
     },
     {
       path: '/login',
       component: Login
-    },
-    {
-      path: '/notebooks',
-      component: Notebooks
     },
     {
       path: '/note',
