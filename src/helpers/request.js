@@ -13,7 +13,7 @@ export default function request(url, type = 'GET', data = {}) {
       url,
       method: type,
       validateStatus(status) {
-        return (status >= 200 && status < 300 || status === 400)
+        return (status >= 200 && status < 300) || status === 400
       }
     }
     if (type.toLowerCase() === 'get') {
@@ -25,7 +25,7 @@ export default function request(url, type = 'GET', data = {}) {
       if (res.status === 200) {
         resolve(res.data)
       } else {
-        Message.error(res.data)
+        Message.error(res.data.msg)
         reject(res.data)
       }
     }).catch(err => {

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'Login',
@@ -40,13 +40,13 @@ export default {
       login: {
         username: '',
         password: '',
-        notice: '',
+        notice: '1223',
         isError: false
       },
       register: {
         username: '',
         password: '',
-        notice: '用户名或密码格式错误',
+        notice: '',
         isError: false
       }
     }
@@ -62,38 +62,48 @@ export default {
     },
 
     onLogin() {
-      if (!this.login.username || !this.login.password) {
+      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.login.username)) {
         this.login.isError = true
-        this.login.notice = '用户名和密码不能为空'
-      } else {
-        this.loginUser({username: this.login.username, password: this.login.password})
-          .then(() => {
-            this.login.isError = false
-            this.login.notice = ''
-            this.$router.push({path: 'notebooks'})
-          }).catch(data => {
-          this.login.isError = true
-          this.login.notice = data.msg
-        })
+        this.login.notice = '用户名3~15个字符，字母数字下划线组合'
+        return
       }
+      if (!/^.{6,16}$/.test(this.login.password)) {
+        this.login.isError = true
+        this.login.notice = '密码长度为6~16个字符'
+        return
+      }
+      this.loginUser({username: this.login.username, password: this.login.password})
+        .then(() => {
+          this.login.isError = false
+          this.login.notice = ''
+          this.$router.push({path: 'notebooks'})
+        }).catch(data => {
+        this.login.isError = true
+        this.login.notice = data.msg
+      })
+
     },
 
     onRegister() {
-      const usernameTest = /^[a-zA-Z0-9_-]{6,16}$/.test(this.register.username)
-      const passwordTest = /^[a-zA-Z0-9_-]{6,16}$/.test(this.register.password)
-      if (!usernameTest || !passwordTest) {
+      if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.register.username)) {
         this.register.isError = true
-      } else {
-        this.registerUser({username: this.register.username, password: this.register.password})
-          .then(() => {
-            this.register.isError = false
-            this.register.notice = ''
-            this.$router.push({path: 'notebooks'})
-          }).catch(data => {
-          this.register.isError = true
-          this.register.notice = data.msg
-        })
+        this.register.notice = '用户名3~15个字符，字母数字下划线组合'
+        return
       }
+      if (!/^.{6,16}$/.test(this.register.password)) {
+        this.register.isError = true
+        this.register.notice = '密码长度为6~16个字符'
+        return
+      }
+      this.registerUser({username: this.register.username, password: this.register.password})
+        .then(() => {
+          this.register.isError = false
+          this.register.notice = ''
+          this.$router.push({path: 'notebooks'})
+        }).catch(data => {
+        this.register.isError = true
+        this.register.notice = data.msg
+      })
     },
   }
 }
