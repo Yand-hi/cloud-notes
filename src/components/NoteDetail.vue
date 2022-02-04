@@ -2,7 +2,8 @@
   <div id="note" class="detail">
     <note-sidebar @update:notes="val => notes = val"></note-sidebar>
     <div class="note-detail">
-      <div class="note-empty" v-show="!currentNote.id">请选择笔记</div>
+      <div class="note-empty" v-show="!currentBook.id">请创建笔记本后</div>
+      <div class="note-empty" v-show="!currentNote.id">选择或创建笔记</div>
       <div class="note-detail-ct" v-show="currentNote.id">
         <div class="note-bar">
           <span> 创建日期: {{ currentNote.createdAtFriendly }}</span>
@@ -22,7 +23,7 @@
           <textarea v-show="!isShowPreview" v-model:value="currentNote.content"
                     @input="onUpdateNote"
                     @keydown="statusText='正在输入...'"
-                    placeholder="请输入内容, 支持 markdown 语法"></textarea>
+                    placeholder="请输入内容, 支持 Markdown 语法"></textarea>
           <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview">
             {{ previewContent }}
           </div>
@@ -93,7 +94,7 @@ export default {
     ...mapGetters([
       'notes',
       'currentNote',
-      'currentBook'
+      'currentBook',
     ]),
 
     previewContent() {
