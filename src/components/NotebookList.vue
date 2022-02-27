@@ -1,8 +1,7 @@
 <template>
   <div class="detail" id="notebook-list">
     <header>
-      <el-button type="text" class="btn" @click="onCreate">
-        <i class="iconfont icon-plus"></i>
+      <el-button type="primary" class="btn" @click="onCreate">
         新建笔记本
       </el-button>
     </header>
