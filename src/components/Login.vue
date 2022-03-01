@@ -38,9 +38,9 @@ export default {
     return {
       show: true,
       login: {
-        username: '',
-        password: '',
-        notice: '1223',
+        username: 'Yandhi',
+        password: 'Yandhi',
+        notice: '',
         isError: false
       },
       register: {

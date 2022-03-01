@@ -1,9 +1,9 @@
 <template>
   <div class="detail" id="notebook-list">
     <header>
-      <el-button type="primary" class="btn" @click="onCreate">
+      <button type="primary" class="btn" @click="onCreate">
         新建笔记本
-      </el-button>
+      </button>
     </header>
     <main>
       <div class="layout">
